@@ -42,7 +42,6 @@ def checkFromDatabase(altername):
     cur = sqlconn.execute(
         "SELECT CODES FROM CODE WHERE ALTERNAME=?", (altername,))
     data = cur.fetchall()
-    print(data)
     if len(data) == 0:
         return {"status": "notFound"}
     elif len(data) == 1:
@@ -76,7 +75,6 @@ def postCode():
 @app.route("/view/<altername>")
 def view(altername):
     data = checkFromDatabase(altername)
-    print(data)
     if data["status"] != "ok":
         flask.abort(404)
     else:
