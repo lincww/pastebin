@@ -42,6 +42,18 @@
       <el-input v-model="altername" placeholder="">
         <template slot="prepend">https://pastebin.emoust.com/view/</template>
       </el-input>
+      <p>
+        Have a password?
+        <el-switch
+          v-model="havePassword"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        >
+        </el-switch>
+        <transition name="el-fade-in-linear">
+          <el-input v-model="password" placeholder="Enter password"></el-input>
+        </transition>
+      </p>
       <el-button type="primary" :loading="isSubmitLoading" @click="submitCode()"
         >Submit</el-button
       >
@@ -68,6 +80,8 @@
         isCheckedAlter: false,
         addresses: {},
         altername: "",
+        havePassword: false,
+        password: "",
       },
       methods: {
         submitCode: function () {
@@ -86,6 +100,12 @@
                   "http://pastebin.emoust.com/view/" + response.data.altername;
                 this.addresses.direct =
                   "http://pastebin.emoust.com/raw/" + response.data.altername;
+                if (this.havePassword) {
+                  this.addresses.viewing =
+                    this.addresses.viewing + "?pw=" + this.password;
+                  this.addresses.direct =
+                    this.addresses.direct + "?pw=" + this.password;
+                }
               } else {
                 this.$alert("Please change the altername", "altername error");
               }

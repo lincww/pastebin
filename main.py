@@ -30,9 +30,10 @@ def createDatabase():
     sqlconn.close()
 
 
-def writeToDatabase(codes, altername):
+def writeToDatabase(codes, altername, password):
     sqlconn = sqlite3.connect('database.db')
-    sqlconn.execute("INSERT INTO CODE VALUES (NULL,?,?)", (codes, altername))
+    sqlconn.execute("INSERT INTO CODE VALUES (NULL,?,?,?)",
+                    (codes, altername, password))
     sqlconn.commit()
     sqlconn.close()
 
@@ -40,12 +41,12 @@ def writeToDatabase(codes, altername):
 def checkFromDatabase(altername):
     sqlconn = sqlite3.connect('database.db')
     cur = sqlconn.execute(
-        "SELECT CODES FROM CODE WHERE ALTERNAME=?", (altername,))
+        "SELECT codes,password FROM CODE WHERE ALTERNAME=?", (altername,))
     data = cur.fetchall()
     if len(data) == 0:
         return {"status": "notFound"}
     elif len(data) == 1:
-        return {"status": "ok", "code": data[0][0]}
+        return {"status": "ok", "code": data[0]}
     else:
         raise IOError
 
@@ -78,7 +79,11 @@ def view(altername):
     if data["status"] != "ok":
         flask.abort(404)
     else:
-        return flask.render_template("view.html", code=data["code"])
+        password = flask.request.args.get('pw', '')
+        if data['code'][1] == "" or password == data['code'][1]:
+            return flask.render_template("view.html", code=data["code"][0])
+        else:
+            return "Password Error"
 
 
 @app.route("/raw/<altername>")
@@ -87,7 +92,13 @@ def viewRaw(altername):
     if data["status"] != "ok":
         flask.abort(404)
     else:
-        return data["code"]
+        password = flask.request.args.get('pw', '')
+        if data['code'][1] == "" or password == data['code'][1]:
+            resp = flask.make_response(data['code'][0])
+            resp.headers['Content-type'] = 'text/plain;charset=UTF-8'
+            return resp
+        else:
+            return "Password Error"
 
 
 if __name__ == "__main__":

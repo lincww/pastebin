@@ -4,13 +4,14 @@
 
 It's quite difficult to find a PasteBin service which fits my requirements well. So why not to write a pastebin by myself? That will be helpful!
 
-## requirements
+## features
 
 - [x] Share the code with highlights(The most basic requirement!)
 - [ ] Share the binary file.
 - [x] Directly get the raw content(With or without a passcode)
 - [ ] Delete the file after any time or any visits.
 - [ ] Costume the args.
+- [ ] Admin panel.
 
 **SOMETHING HIGH LEVEL**
 
