@@ -23,7 +23,8 @@ def createDatabase():
     sqlconn.execute("""CREATE TABLE code(
         ID INT PRIMARY KEY,
         CODES TEXT,
-        ALTERNAME TEXT
+        ALTERNAME TEXT,
+        password TEXT
         )
         """)
     sqlconn.commit()
@@ -61,12 +62,13 @@ def postCode():
     data = json.loads(flask.request.data)
     code = data['codes']
     altername = data['altername']
+    password = data['password']
     if altername == "":
         altername = generate_random_str(8)
     # Check if have already altername
     status = checkFromDatabase(altername)["status"]
     if status == "notFound":
-        writeToDatabase(code, altername)
+        writeToDatabase(code, altername, password)
         return {"status": "ok", "altername": altername}
     else:
         return {"status": "Error", "why": "The altername has been used."}

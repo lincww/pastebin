@@ -42,7 +42,7 @@
       <el-input v-model="altername" placeholder="">
         <template slot="prepend">https://pastebin.emoust.com/view/</template>
       </el-input>
-      <p>
+      <p v-on:click="onPasswordSwitchChange()">
         Have a password?
         <el-switch
           v-model="havePassword"
@@ -50,7 +50,7 @@
           inactive-color="#ff4949"
         >
         </el-switch>
-        <transition name="el-fade-in-linear">
+        <transition name="el-fade-in-linear" v-if="havePassword">
           <el-input v-model="password" placeholder="Enter password"></el-input>
         </transition>
       </p>
@@ -90,6 +90,7 @@
             .post("/postcode", {
               codes: this.codeContent,
               altername: this.altername,
+              password: this.password,
             })
             .then((response) => {
               console.log(response);
@@ -118,6 +119,11 @@
               );
               this.isSubmitLoading = false;
             });
+        },
+        onPasswordSwitchChange: function () {
+          if (!this.havePassword) {
+            this.password = "";
+          }
         },
         // onCodeChange: function () {
         //   hljs.highlightAll();
