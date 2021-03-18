@@ -12,6 +12,7 @@ It's quite difficult to find a PasteBin service which fits my requirements well.
 - [ ] Delete the file after any time or any visits.
 - [ ] Costume the args.
 - [ ] Admin panel.
+- [ ] Optimize the UI.
 
 **SOMETHING HIGH LEVEL**
 
