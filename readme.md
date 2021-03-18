@@ -6,16 +6,16 @@ It's quite difficult to find a PasteBin service which fits my requirements well.
 
 ## requirements
 
-- [x]Share the code with highlights(The most basic requirement!)
-- [ ]Share the binary file.
-- [x]Directly get the raw content(With or without a passcode)
-- [ ]Delete the file after any time or any visits.
-- [ ]Costume the args.
+- [x] Share the code with highlights(The most basic requirement!)
+- [ ] Share the binary file.
+- [x] Directly get the raw content(With or without a passcode)
+- [ ] Delete the file after any time or any visits.
+- [ ] Costume the args.
 
 **SOMETHING HIGH LEVEL**
 
-- [ ]User system and logins.
-- [ ]Users can modify what they pushed or others shared and leave a commit. And the modify history.
+- [ ] User system and logins.
+- [ ] Users can modify what they pushed or others shared and leave a commit. And the modify history.
 
 ## Technical details
 
