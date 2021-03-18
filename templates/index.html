@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<head>
+  <title>Yep another pastebin</title>
+  <script
+    src="https://s1.pstatp.com/cdn/expire-1-M/vue/2.6.12/vue.js"
+    type="application/javascript"
+  ></script>
+  <script
+    src="https://s3.pstatp.com/cdn/expire-1-M/element-ui/2.15.0/index.js"
+    type="application/javascript"
+  ></script>
+  <link
+    href="https://s2.pstatp.com/cdn/expire-1-M/element-ui/2.15.0/theme-chalk/index.css"
+    type="text/css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://s3.pstatp.com/cdn/expire-1-M/highlight.js/10.6.0/highlight.min.js"
+    type="application/javascript"
+  ></script>
+  <link
+    href="https://s2.pstatp.com/cdn/expire-1-M/highlight.js/10.6.0/styles/default.min.css"
+    type="text/css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://s2.pstatp.com/cdn/expire-1-M/axios/0.21.1/axios.js"
+    type="application/javascript"
+  ></script>
+</head>
+<body>
+  <div id="app">
+    <h1>Yet Another Pastebin</h1>
+    <div id="inputCode">
+      <!--首先是代码输入框-->
+      <el-input
+        type="textarea"
+        autosize
+        v-model="codeContent"
+        placeholder="Please input whaterever you want to input"
+      ></el-input>
+      <el-input v-model="altername" placeholder="">
+        <template slot="prepend">https://pastebin.emoust.com/view/</template>
+      </el-input>
+      <el-button type="primary" :loading="isSubmitLoading" @click="submitCode()"
+        >Submit</el-button
+      >
+    </div>
+    <div id="result" v-if="isHavingResult">
+      <p>
+        The address is:
+        <el-input v-model="addresses.viewing"></el-input>
+      </p>
+      <p>
+        Direct address is:
+        <el-input v-model="addresses.direct" placeholder=""></el-input>
+      </p>
+    </div>
+  </div>
+  <script>
+    var app = new Vue({
+      delimiters: ["{[", "]}"],
+      el: "#app",
+      data: {
+        codeContent: "",
+        isSubmitLoading: false,
+        isHavingResult: false,
+        isCheckedAlter: false,
+        addresses: {},
+        altername: "",
+      },
+      methods: {
+        submitCode: function () {
+          this.isSubmitLoading = true;
+          axios
+            .post("/postcode", {
+              codes: this.codeContent,
+              altername: this.altername,
+            })
+            .then((response) => {
+              console.log(response);
+              this.isSubmitLoading = false;
+              if (response.data.status == "ok") {
+                this.isHavingResult = true;
+                this.addresses.viewing =
+                  "http://pastebin.emoust.com/view/" + response.data.altername;
+                this.addresses.direct =
+                  "http://pastebin.emoust.com/raw/" + response.data.altername;
+              } else {
+                this.$alert("Please change the altername", "altername error");
+              }
+              //TODO
+            })
+            .catch((error) => {
+              this.$alert(
+                "Please check the internet connection or retry",
+                "Connection Error"
+              );
+              this.isSubmitLoading = false;
+            });
+        },
+        // onCodeChange: function () {
+        //   hljs.highlightAll();
+        // },
+      },
+    });
+  </script>
+</body>
